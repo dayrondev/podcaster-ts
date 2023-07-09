@@ -1,9 +1,14 @@
+import { Link } from 'wouter'
+
 export const Header: React.FC = () => {
   return (
-    <header className="border-b-[2px]">
+    <header>
       <div className="container mx-auto py-5 px-3 xl:px-0">
-        <h2 className="text-sky-700 text-3xl font-bold">Podcaster</h2>
+        <Link href='/'>
+          <h2 className="text-sky-700 text-3xl font-bold cursor-pointer">Podcaster</h2>
+        </Link>
       </div>
+      <hr className="border-b-[1px]"/>
     </header>
   )
 }
