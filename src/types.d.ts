@@ -11,6 +11,8 @@ export interface PodcastDetailItem {
   name: string
   date: Date
   time: number
+  description?: string
+  audio?: string
 }
 
 // iTunes response

@@ -36,8 +36,8 @@ export const getPopularPodcasts = async (): Promise<Podcast[]> => {
 
 const getMappedPodcastDetail = (results: PodcastDetailResponse[]): PodcastDetailItem[] => {
   return results.map(item => {
-    const { trackId: id, trackName: name, releaseDate: date, trackTimeMillis: time } = item
-    return { id, name, date, time }
+    const { trackId: id, trackName: name, releaseDate: date, trackTimeMillis: time, description, episodeUrl: audio } = item
+    return { id, name, date, time, description, audio }
   })
 }
 
@@ -49,7 +49,7 @@ export const getPodcastDetail = async (id: string): Promise<PodcastDetailItem[]>
     const res = await fetch(url)
     const data: PodcastDetailResponseRaw = await res.json()
     const responseResult: PodcastResponseResult = JSON.parse(data.contents)
-    return getMappedPodcastDetail(responseResult.results)
+    return getMappedPodcastDetail(responseResult.results.filter(i => i.trackId.toString() !== id))
   } catch (error) {
     console.error(error)
     return []

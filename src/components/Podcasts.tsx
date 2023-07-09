@@ -1,4 +1,4 @@
-import { PodcastItem } from './PodcastItem'
+import { Item } from './Item'
 import { usePodcasts } from '../hooks/usePodcasts'
 import { useSearch } from '../hooks/useSearch'
 
@@ -31,7 +31,7 @@ export const Podcasts: React.FC = () => {
       </div>
       <div className='flex flex-wrap'>
         {podcasts.map(podcast => (
-          <PodcastItem key={podcast.id} podcast={podcast}/>
+          <Item key={podcast.id} podcast={podcast}/>
         ))}
       </div>
     </section>

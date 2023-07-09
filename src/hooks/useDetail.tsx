@@ -9,7 +9,7 @@ interface PodcasterDetailCache {
 
 const PODCASTER_DETAIL_KEY = 'podcaster-datails'
 
-export const usePodcastDetail = (id: string): { details: PodcastDetailItem[] } => {
+export const useDetail = (id: string): { details: PodcastDetailItem[] } => {
   const [details, setDetails] = useState<PodcastDetailItem[]>([])
 
   useEffect(() => {
