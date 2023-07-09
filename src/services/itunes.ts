@@ -20,7 +20,7 @@ export const getPopularPodcasts = async (): Promise<Podcast[]> => {
     const data: ITunesResponse = await res.json()
     return getMappedPodcasts(data)
   } catch (error) {
-    console.log(error)
+    console.error(error)
     return []
   }
 }

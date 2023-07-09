@@ -28,7 +28,7 @@ export const usePodcasts = (search: string): { podcasts: Podcast[] } => {
           localStorage.setItem(PODCASTER_KEY, JSON.stringify(data))
           setPodcasts(podcasts)
         })
-        .catch(error => { console.log(error) })
+        .catch(error => { console.error(error) })
     }
   }, [])
 
