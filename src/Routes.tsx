@@ -1,4 +1,3 @@
-import React from 'react'
 import { Podcasts } from './components/Podcasts'
 import { Route } from 'wouter'
 import { Detail } from './components/Detail'
@@ -9,10 +8,10 @@ export const Routes: React.FC = () => {
     <>
       <Route path="/" component={Podcasts}/>
       <Route path="/podcast/:podcastId">
-        {(params) => <Detail podcastId={params.podcastId}/>}
+        {({ podcastId }) => <Detail podcastId={podcastId}/>}
       </Route>
       <Route path="/podcast/:podcastId/episode/:episodeId">
-        {(params) => <Episode podcastId={params.podcastId} episodeId={params.episodeId}/>}
+        {({ podcastId, episodeId }) => <Episode podcastId={podcastId} episodeId={episodeId}/>}
       </Route>
     </>
   )

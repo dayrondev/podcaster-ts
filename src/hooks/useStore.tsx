@@ -6,7 +6,7 @@ interface PodcasterState {
   finishLoader: () => void
 }
 
-export const usePodcasterStore = create<PodcasterState>()((set) => ({
+export const useStore = create<PodcasterState>()((set) => ({
   isLoading: false,
   startLoader: () => { set({ isLoading: true }) },
   finishLoader: () => { set({ isLoading: false }) }

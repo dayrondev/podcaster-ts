@@ -1,11 +1,11 @@
 import { Link } from 'wouter'
 import { type Podcast } from '../types'
 
-interface PropPodcastItem {
+interface ItemProp {
   podcast: Podcast
 }
 
-export const Item: React.FC<PropPodcastItem> = ({ podcast }: PropPodcastItem) => {
+export const Item: React.FC<ItemProp> = ({ podcast }: ItemProp) => {
   const { id, title, author, image } = podcast
   return (
     <Link href={`/podcast/${id}`}>

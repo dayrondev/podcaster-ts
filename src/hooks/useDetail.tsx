@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { getPodcastDetail } from '../services/itunes'
 import { type PodcastDetailItem } from '../types'
-import { usePodcasterStore } from './usePodcasterStore'
+import { useStore } from './useStore'
 import { readFromCache, saveToCache } from '../lib/cache'
 
 interface PodcasterDetailCache {
@@ -14,24 +14,26 @@ const PODCASTER_DETAIL_KEY = 'podcaster-datails'
 export const useDetail = (id: string): { details: PodcastDetailItem[] } => {
   const [details, setDetails] = useState<PodcastDetailItem[]>([])
 
-  const startLoader = usePodcasterStore((state) => state.startLoader)
-  const finishLoader = usePodcasterStore((state) => state.finishLoader)
+  const startLoader = useStore((state) => state.startLoader)
+  const finishLoader = useStore((state) => state.finishLoader)
 
   useEffect(() => {
-    const data = readFromCache(`${PODCASTER_DETAIL_KEY}-${id}`) as PodcasterDetailCache
-
-    if (data != null && new Date().getTime() < data.expiration) {
-      setDetails(data.value)
-    } else {
+    const fetchData = async (): Promise<void> => {
+      const cacheData = readFromCache(`${PODCASTER_DETAIL_KEY}-${id}`) as PodcasterDetailCache
       startLoader()
-      getPodcastDetail(id)
-        .then(details => {
-          setDetails(details)
-          saveToCache(`${PODCASTER_DETAIL_KEY}-${id}`, details)
-        })
-        .catch(error => { console.error(error) })
-        .finally(finishLoader)
+
+      if (cacheData != null && new Date().getTime() < cacheData.expiration) {
+        setDetails(cacheData.value)
+      } else {
+        const podcastDetails = await getPodcastDetail(id)
+        setDetails(podcastDetails)
+        saveToCache(`${PODCASTER_DETAIL_KEY}-${id}`, podcastDetails)
+      }
+
+      finishLoader()
     }
+
+    void fetchData()
   }, [])
 
   return { details }

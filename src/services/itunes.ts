@@ -10,18 +10,14 @@ import {
 const ITUNES_URL = 'https://itunes.apple.com'
 const ALL_ORIGINS_URL = 'https://api.allorigins.win/get?url='
 
-const getMappedPodcasts = (data: ITunesResponse): Podcast[] => {
-  return data.feed.entry.map(item => {
-    const id = item.id.attributes['im:id']
-    const images = item['im:image']
-    const image = images[images.length - 1].label
-    const title = item['im:name'].label
-    const author = item['im:artist'].label
-    const description = item.summary.label
-
-    return { id, image, title, author, description }
-  })
-}
+const getMappedPodcasts = (data: ITunesResponse): Podcast[] =>
+  data.feed.entry.map(item => ({
+    id: item.id.attributes['im:id'],
+    image: item['im:image'].slice(-1)[0].label,
+    title: item['im:name'].label,
+    author: item['im:artist'].label,
+    description: item.summary.label
+  }))
 
 export const getPopularPodcasts = async (): Promise<Podcast[]> => {
   try {
@@ -34,12 +30,15 @@ export const getPopularPodcasts = async (): Promise<Podcast[]> => {
   }
 }
 
-const getMappedPodcastDetail = (results: PodcastDetailResponse[]): PodcastDetailItem[] => {
-  return results.map(item => {
-    const { trackId: id, trackName: name, releaseDate: date, trackTimeMillis: time, description, episodeUrl: audio } = item
-    return { id, name, date, time, description, audio }
-  })
-}
+const getMappedPodcastDetail = (results: PodcastDetailResponse[]): PodcastDetailItem[] =>
+  results.map(item => ({
+    id: item.trackId,
+    name: item.trackName,
+    date: item.releaseDate,
+    time: item.trackTimeMillis,
+    description: item.description,
+    audio: item.episodeUrl
+  }))
 
 export const getPodcastDetail = async (id: string): Promise<PodcastDetailItem[]> => {
   const podcastDetailUrl = `${ITUNES_URL}/lookup?id=${id}&media=podcast&entity=podcastEpisode&limit=20`

@@ -2,12 +2,12 @@ import { usePodcasts } from '../hooks/usePodcasts'
 import { useDetail } from '../hooks/useDetail'
 import { AsideInfo } from './AsideInfo'
 
-interface PodcastDetailItemProp {
+interface EpisodeProp {
   podcastId: string
   episodeId: string
 }
 
-export const Episode: React.FC<PodcastDetailItemProp> = ({ podcastId, episodeId }: PodcastDetailItemProp) => {
+export const Episode: React.FC<EpisodeProp> = ({ podcastId, episodeId }: EpisodeProp) => {
   const { getPodcastById } = usePodcasts('')
   const podcast = getPodcastById(podcastId)
   const { details } = useDetail(podcastId)
@@ -33,10 +33,8 @@ export const Episode: React.FC<PodcastDetailItemProp> = ({ podcastId, episodeId 
             {audio != null && (
               <>
                 <hr className="border-b-[1px] my-6"/>
-                {/* <audio className='w-full' src={audio} controls autoPlay loop/> */}
                 <audio controls className='w-full'>
                   <source src={audio} type="audio/mp3" />
-                  <p>Su navegador no es compatible con audio HTML5. Aquí hay un <a href="viper.mp3">enlace al audio</a> en su lugar.</p>
                 </audio>
               </>
             )}

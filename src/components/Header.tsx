@@ -1,9 +1,9 @@
 import { Link } from 'wouter'
 import { Spinner } from './Spinner'
-import { usePodcasterStore } from '../hooks/usePodcasterStore'
+import { useStore } from '../hooks/useStore'
 
 export const Header: React.FC = () => {
-  const isLoading = usePodcasterStore((state) => state.isLoading)
+  const isLoading = useStore((state) => state.isLoading)
 
   return (
     <header>

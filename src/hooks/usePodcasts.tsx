@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { getPopularPodcasts } from '../services/itunes'
 import { type Podcast } from '../types'
-import { usePodcasterStore } from './usePodcasterStore'
+import { useStore } from './useStore'
 import { readFromCache, saveToCache } from '../lib/cache'
 
 interface PodcasterCache {
@@ -17,34 +17,40 @@ export const usePodcasts = (search: string): {
 } => {
   const [podcasts, setPodcasts] = useState<Podcast[]>([])
 
-  const startLoader = usePodcasterStore((state) => state.startLoader)
-  const finishLoader = usePodcasterStore((state) => state.finishLoader)
+  const startLoader = useStore((state) => state.startLoader)
+  const finishLoader = useStore((state) => state.finishLoader)
 
   useEffect(() => {
-    const data = readFromCache(PODCASTER_KEY) as PodcasterCache
-
-    if (data != null && new Date().getTime() < data.expiration) {
-      setPodcasts(data.value)
-    } else {
+    const fetchData = async (): Promise<void> => {
+      const cacheData = readFromCache(PODCASTER_KEY) as PodcasterCache
       startLoader()
-      getPopularPodcasts()
-        .then(podcasts => {
-          setPodcasts(podcasts)
-          saveToCache(PODCASTER_KEY, podcasts)
-        })
-        .catch(error => { console.error(error) })
-        .finally(finishLoader)
+
+      if (cacheData != null && new Date().getTime() < cacheData.expiration) {
+        setPodcasts(cacheData.value)
+      } else {
+        const popularPodcasts = await getPopularPodcasts()
+        setPodcasts(popularPodcasts)
+        saveToCache(PODCASTER_KEY, popularPodcasts)
+      }
+
+      finishLoader()
     }
+
+    void fetchData()
   }, [])
 
-  const getFilteredPodcast = (): Podcast[] =>
-    search.length > 0
-      ? podcasts.filter(item =>
-        item.author.toLowerCase().includes(search.toLowerCase()) ||
-        item.title.toLowerCase().includes(search.toLowerCase()))
-      : podcasts
+  const getFilteredPodcast = (): Podcast[] => {
+    const searchLower = search.toLowerCase()
 
-  const getPodcastById = (id: string): Podcast | undefined => podcasts.find(item => item.id === id)
+    return searchLower.length > 0
+      ? podcasts.filter(item =>
+        item.author.toLowerCase().includes(searchLower) ||
+        item.title.toLowerCase().includes(searchLower))
+      : podcasts
+  }
+
+  const getPodcastById = (id: string): Podcast | undefined =>
+    podcasts.find(item => item.id === id)
 
   return {
     podcasts: getFilteredPodcast(),

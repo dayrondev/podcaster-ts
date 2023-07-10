@@ -4,11 +4,11 @@ import { useDetail } from '../hooks/useDetail'
 import { AsideInfo } from './AsideInfo'
 import { Link } from 'wouter'
 
-interface PodcastDetailItemProp {
+interface DetailProp {
   podcastId: string
 }
 
-export const Detail: React.FC<PodcastDetailItemProp> = ({ podcastId }: PodcastDetailItemProp) => {
+export const Detail: React.FC<DetailProp> = ({ podcastId }: DetailProp) => {
   const { getPodcastById } = usePodcasts('')
   const podcast = getPodcastById(podcastId)
   const { details } = useDetail(podcastId)
