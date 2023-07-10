@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { getPopularPodcasts } from '../services/itunes'
 import { type Podcast } from '../types'
+import { usePodcasterStore } from './usePodcasterStore'
 
 interface PodcasterCache {
   expiration: number
@@ -15,6 +16,9 @@ export const usePodcasts = (search: string): {
 } => {
   const [podcasts, setPodcasts] = useState<Podcast[]>([])
 
+  const startLoader = usePodcasterStore((state) => state.startLoader)
+  const finishLoader = usePodcasterStore((state) => state.finishLoader)
+
   useEffect(() => {
     let data: PodcasterCache | null = null
     const cacheData = localStorage.getItem(PODCASTER_KEY)
@@ -23,15 +27,17 @@ export const usePodcasts = (search: string): {
     if (data != null && new Date().getTime() < data.expiration) {
       setPodcasts(data.podcasts)
     } else {
+      startLoader()
       getPopularPodcasts()
         .then(podcasts => {
           // Expires in 1 day
           const expiration = new Date().getTime() + 1000 * 60 * 60 * 24
           const data = { expiration, podcasts }
-          localStorage.setItem(PODCASTER_KEY, JSON.stringify(data))
+          window.localStorage.setItem(PODCASTER_KEY, JSON.stringify(data))
           setPodcasts(podcasts)
         })
         .catch(error => { console.error(error) })
+        .finally(finishLoader)
     }
   }, [])
 

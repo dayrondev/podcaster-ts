@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { getPodcastDetail } from '../services/itunes'
 import { type PodcastDetailItem } from '../types'
+import { usePodcasterStore } from './usePodcasterStore'
 
 interface PodcasterDetailCache {
   expiration: number
@@ -12,6 +13,9 @@ const PODCASTER_DETAIL_KEY = 'podcaster-datails'
 export const useDetail = (id: string): { details: PodcastDetailItem[] } => {
   const [details, setDetails] = useState<PodcastDetailItem[]>([])
 
+  const startLoader = usePodcasterStore((state) => state.startLoader)
+  const finishLoader = usePodcasterStore((state) => state.finishLoader)
+
   useEffect(() => {
     let data: PodcasterDetailCache | null = null
     const cacheData = localStorage.getItem(`${PODCASTER_DETAIL_KEY}-${id}`)
@@ -20,6 +24,7 @@ export const useDetail = (id: string): { details: PodcastDetailItem[] } => {
     if (data != null && new Date().getTime() < data.expiration) {
       setDetails(data.details)
     } else {
+      startLoader()
       getPodcastDetail(id)
         .then(details => {
           // Expires in 1 day
@@ -29,6 +34,7 @@ export const useDetail = (id: string): { details: PodcastDetailItem[] } => {
           setDetails(details)
         })
         .catch(error => { console.error(error) })
+        .finally(finishLoader)
     }
   }, [])
 
