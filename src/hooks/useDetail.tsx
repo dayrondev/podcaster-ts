@@ -2,10 +2,11 @@ import { useState, useEffect } from 'react'
 import { getPodcastDetail } from '../services/itunes'
 import { type PodcastDetailItem } from '../types'
 import { usePodcasterStore } from './usePodcasterStore'
+import { readFromCache, saveToCache } from '../lib/cache'
 
 interface PodcasterDetailCache {
   expiration: number
-  details: PodcastDetailItem[]
+  value: PodcastDetailItem[]
 }
 
 const PODCASTER_DETAIL_KEY = 'podcaster-datails'
@@ -17,21 +18,16 @@ export const useDetail = (id: string): { details: PodcastDetailItem[] } => {
   const finishLoader = usePodcasterStore((state) => state.finishLoader)
 
   useEffect(() => {
-    let data: PodcasterDetailCache | null = null
-    const cacheData = localStorage.getItem(`${PODCASTER_DETAIL_KEY}-${id}`)
-    if (cacheData != null) data = JSON.parse(cacheData)
+    const data = readFromCache(`${PODCASTER_DETAIL_KEY}-${id}`) as PodcasterDetailCache
 
     if (data != null && new Date().getTime() < data.expiration) {
-      setDetails(data.details)
+      setDetails(data.value)
     } else {
       startLoader()
       getPodcastDetail(id)
         .then(details => {
-          // Expires in 1 day
-          const expiration = new Date().getTime() + 1000 * 60 * 60 * 24
-          const data = { expiration, details }
-          localStorage.setItem(`${PODCASTER_DETAIL_KEY}-${id}`, JSON.stringify(data))
           setDetails(details)
+          saveToCache(`${PODCASTER_DETAIL_KEY}-${id}`, details)
         })
         .catch(error => { console.error(error) })
         .finally(finishLoader)
