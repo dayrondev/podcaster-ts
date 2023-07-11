@@ -12,7 +12,7 @@ export const Header: React.FC = () => {
           <Link href='/'>
             <h2 className="text-sky-700 text-3xl font-bold cursor-pointer">Podcaster</h2>
           </Link>
-          { isLoading && <Spinner/>}
+          { isLoading && <Spinner/> }
         </div>
       </div>
       <hr className="border-b-[1px]"/>
