@@ -13,7 +13,7 @@ export const Detail: React.FC<DetailProp> = ({ podcastId }: DetailProp) => {
   const podcast = getPodcastById(podcastId)
   const { details } = useDetail(podcastId)
 
-  if (podcast == null) return <h1>Podcast not found</h1>
+  if (podcast == null) return null
 
   return (
     <section>

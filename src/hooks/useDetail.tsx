@@ -14,8 +14,8 @@ const PODCASTER_DETAIL_KEY = 'podcaster-datails'
 export const useDetail = (id: string): { details: PodcastDetailItem[] } => {
   const [details, setDetails] = useState<PodcastDetailItem[]>([])
 
-  const startLoader = useStore((state) => state.startLoader)
-  const finishLoader = useStore((state) => state.finishLoader)
+  const startLoader = useStore((state) => state.startDetailsLoader)
+  const finishLoader = useStore((state) => state.finishDetailsLoader)
 
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
