@@ -7,6 +7,8 @@ import {
   type PodcastDetailItem
 } from '../types'
 
+import popularPodcasts from '../mocks/popularPodcasts.json'
+
 const ITUNES_URL = 'https://itunes.apple.com'
 const ALL_ORIGINS_URL = 'https://api.allorigins.win/get?url='
 
@@ -19,10 +21,17 @@ const getMappedPodcasts = (data: ITunesResponse): Podcast[] =>
     description: item.summary.label
   }))
 
+export const POPULAR_PODCASTS_URL = `${ITUNES_URL}/us/rss/toppodcasts/limit=100/genre=1310/json`
+
 export const getPopularPodcasts = async (): Promise<Podcast[]> => {
   try {
-    const res = await fetch(`${ITUNES_URL}/us/rss/toppodcasts/limit=100/genre=1310/json`)
-    const data: ITunesResponse = await res.json()
+    let data
+    if (process.env.NODE_ENV === 'test') {
+      data = popularPodcasts
+    } else {
+      const res = await fetch(POPULAR_PODCASTS_URL)
+      data = await res.json()
+    }
     return getMappedPodcasts(data)
   } catch (error) {
     console.error(error)

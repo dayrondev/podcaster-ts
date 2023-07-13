@@ -1,5 +1,5 @@
 import { usePodcasts } from '../hooks/usePodcasts'
-import { convertMsToTime } from '../lib/time'
+import { convertMsToTime } from '../libs/time'
 import { useDetail } from '../hooks/useDetail'
 import { AsideInfo } from './AsideInfo'
 import { Link } from 'wouter'
@@ -25,7 +25,7 @@ export const Detail: React.FC<DetailProp> = ({ podcastId }: DetailProp) => {
             <div className="shadow-lg w-full py-4 px-6 mb-4">
               <h3 className='text-2xl font-bold'>Episodes: {details.length}</h3>
             </div>
-            <div className="shadow-lg w-full py-4 px-6">
+            <div className="shadow-lg w-full p-6">
               <table className="w-full table-auto">
                 <thead>
                   <tr>

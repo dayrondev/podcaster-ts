@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { getPopularPodcasts } from '../services/itunes'
 import { type Podcast } from '../types'
 import { useStore } from './useStore'
-import { readFromCache, saveToCache } from '../lib/cache'
+import { readFromCache, saveToCache } from '../libs/cache'
 
 interface PodcasterCache {
   expiration: number
