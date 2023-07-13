@@ -15,12 +15,13 @@ export const Podcasts: React.FC = () => {
       <div className="w-full mb-14">
         <div className="w-full flex justify-end px-4 pt-6 pb-8">
           <div className="mb-4 flex w-full sm:w-1/2 lg:w-1/3">
-            <span className="font-bold text-xl mr-2 px-2.5 py-1 rounded bg-sky-700 text-white">
+            <span className="font-bold text-xl mr-2 px-2.5 py-1 rounded bg-sky-700 text-white" data-testid="count">
               {podcasts.length}
             </span>
             <input
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="username"
+              id="search"
+              data-testid="search"
               type="text"
               placeholder="Filter podcasts..."
               value={search}
