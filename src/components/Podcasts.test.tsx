@@ -1,5 +1,8 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { Podcasts } from './Podcasts'
+import { getPopularPodcasts } from '../services/itunes'
+
+const [{ title, author }] = await getPopularPodcasts()
 
 const searchValidation = (searchEl: HTMLInputElement, text: string, founded: number): void => {
   const countEl = screen.getByTestId('count')
@@ -17,7 +20,8 @@ describe('Podcasts', () => {
   test('should render podcasts', async () => {
     const countEl = screen.getByTestId('count')
     expect(countEl).toBeDefined()
-    expect(screen.findByText('Author: The Joe Budden Network')).not.toBe(null)
+    expect(screen.findByText(title)).not.toBe(null)
+    expect(screen.findByText(`Author: ${author}`)).not.toBe(null)
     expect(countEl.innerHTML).toEqual('100')
     // screen.debug()
   })
@@ -25,13 +29,14 @@ describe('Podcasts', () => {
   test('should filter podcasts', () => {
     const searchEl = screen.getByTestId('search')
     expect(searchEl).toBeDefined()
-    if (searchEl instanceof HTMLInputElement) {
-      searchValidation(searchEl, 'p', 70)
-      searchValidation(searchEl, 'pr', 13)
-      searchValidation(searchEl, 'pre', 5)
-      searchValidation(searchEl, 'pres', 4)
-      searchValidation(searchEl, 'prest', 0)
-      searchValidation(searchEl, '', 100)
-    }
+    expect(searchEl).toBeInstanceOf(HTMLInputElement)
+
+    const searchInput = searchEl as HTMLInputElement
+    searchValidation(searchInput, 'p', 70)
+    searchValidation(searchInput, 'pr', 13)
+    searchValidation(searchInput, 'pre', 5)
+    searchValidation(searchInput, 'pres', 4)
+    searchValidation(searchInput, 'prest', 0)
+    searchValidation(searchInput, '', 100)
   })
 })
