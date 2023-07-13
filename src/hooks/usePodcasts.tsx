@@ -17,8 +17,8 @@ export const usePodcasts = (search: string): {
 } => {
   const [podcasts, setPodcasts] = useState<Podcast[]>([])
 
-  const startLoader = useStore((state) => state.startLoader)
-  const finishLoader = useStore((state) => state.finishLoader)
+  const startLoader = useStore((state) => state.startPodcastsLoader)
+  const finishLoader = useStore((state) => state.finishPodcastsLoader)
 
   useEffect(() => {
     const fetchData = async (): Promise<void> => {

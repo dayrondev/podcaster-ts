@@ -3,7 +3,8 @@ import { Spinner } from './Spinner'
 import { useStore } from '../hooks/useStore'
 
 export const Header: React.FC = () => {
-  const isLoading = useStore((state) => state.isLoading)
+  const isLoadingDetails = useStore((state) => state.isLoadingDetails)
+  const isLoadingPodcasts = useStore((state) => state.isLoadingPodcasts)
 
   return (
     <header>
@@ -12,7 +13,7 @@ export const Header: React.FC = () => {
           <Link href='/'>
             <h2 className="text-sky-700 text-3xl font-bold cursor-pointer">Podcaster</h2>
           </Link>
-          { isLoading && <Spinner/> }
+          { (isLoadingDetails || isLoadingPodcasts) && <Spinner/> }
         </div>
       </div>
       <hr className="border-b-[1px]"/>

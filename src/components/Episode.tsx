@@ -13,7 +13,7 @@ export const Episode: React.FC<EpisodeProp> = ({ podcastId, episodeId }: Episode
   const { details } = useDetail(podcastId)
   const episode = details.find(item => item.id.toString() === episodeId)
 
-  if (podcast == null || episode == null) return <h1>Episode not found</h1>
+  if (podcast == null || episode == null) return null
 
   const { name, description, audio } = episode
 
