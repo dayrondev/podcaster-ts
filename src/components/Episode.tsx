@@ -1,3 +1,4 @@
+import { Link } from 'wouter'
 import { usePodcasts } from '../hooks/usePodcasts'
 import { useDetail } from '../hooks/useDetail'
 import { AsideInfo } from './AsideInfo'
@@ -31,12 +32,17 @@ export const Episode: React.FC<EpisodeProp> = ({ podcastId, episodeId }: Episode
           )}
           {audio != null && (
             <>
-              <hr className="border-b-[1px] my-6"/>
+              <hr className="border-b-[1px] my-8"/>
               <audio controls className='w-full'>
                 <source src={audio} type="audio/mp3" />
               </audio>
             </>
           )}
+          <div className='mt-10'>
+            <Link href={`/podcast/${podcastId}`} className='text-white bg-sky-700 border-0 py-2 px-6 focus:outline-none hover:bg-sky-600 rounded text-lg'>
+              Back
+            </Link>
+          </div>
         </div>
       </main>
     </section>
