@@ -8,7 +8,7 @@ interface AsideInfoProp {
 export const AsideInfo: React.FC<AsideInfoProp> = ({ podcast }: AsideInfoProp) => {
   const { id, image, title, author, description } = podcast
   return (
-    <aside className="flex flex-col p-4 shadow-lg lg:w-1/3 md:1/3 items-center">
+    <aside className="flex flex-col p-4 shadow-lg lg:w-1/2 md:1/3 items-center">
        <Link href={`/podcast/${id}`}>
         <div className="p-2 mt-2 cursor-pointer">
           <img src={image} alt={`Podcast ${title} by ${author}`} />
