@@ -11,7 +11,7 @@ Podcaster es una aplicación web diseñada para que puedas disfrutar de tus podc
 - Visualiza los 100 podcasts más populares del momento.
 - Realiza búsquedas para encontrar rápidamente los podcasts que te interesan.
 - Reproduce y disfruta de episodios completos con una calidad de sonido excepcional.
-- Interfaz intuitiva y fácil de usar que te permite navegar sin esfuerzo por la aplicación.
+- Interfaz adaptable a tu dispositivo, intuitiva y fácil de usar que te permite navegar sin esfuerzo por la aplicación.
 
 ## Instalación y configuración
 
